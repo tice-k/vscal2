@@ -1,65 +1,40 @@
 # vscal README
 
-This is the README for your extension "vscal". After writing up a brief description, we recommend including the following sections.
+This is aiming to provide an easier way to show monthly calendar, like the one you have on the wall in your house, on screen without switching windows (ie. inside current VS Code instance). At the moment, the activation is a little tedious, UI is premitive, it works only on Mac or Linux, but does the job (for me). Hopefully somebody (or I) can find time to make this better, quicker, prettier soon...
 
 ## Features
 
-Describe specific features of your extension including screenshots of your extension in action. Image paths are relative to this README file.
-
-For example if there is an image subfolder under your extension project workspace:
-
-\!\[feature X\]\(images/feature-x.png\)
-
-> Tip: Many popular extensions utilize animations. This is an excellent way to show off your extension! We recommend short, focused animations that are easy to follow.
+Shows the 3-month calender as a new tab by going to Command Palette > "Calendar" (and you'll just close/dismiss that tab afterwards).
 
 ## Requirements
 
-If you have any requirements or dependencies, add a section describing those and how to install and configure them.
+This works only on Mac or Linux at this time.
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
-This extension contributes the following settings:
-
-* `myExtension.enable`: enable/disable this extension
-* `myExtension.thing`: set to `blah` to do something
+None for now, but perhaps "how many months to show" could be?
 
 ## Known Issues
 
-Calling out known issues can help limit users opening duplicate issues against your extension.
+This works only on Mac or Linux at this time.
 
 ## Release Notes
 
-Users appreciate release notes as you update your extension.
+### v0.0.2
 
-### 1.0.0
+No code change, but useability enhancement by hooking up the command to [vscode-statusbar-commands](https://github.com/AnWeber/vscode-statusbar-command) extension. After installing that awesome extension, just go in to `$HOME/.vscode/anweber.statusbar-commands-0.1.0/package.json` and edit the `default` array element like;
+```
+"default": [
+   {
+       "text": "$(calendar)",
+       "tooltip": "monthly calendar",
+       "alignment": "right",
+       "command": "extension.calendar"
+   }
+]
+```
+ And you'll have a calendar icon appearing on the status bar and clicking it, boom, the calendar doc opens.
 
-Initial release of ...
+### v0.0.1
 
-### 1.0.1
-
-Fixed issue #.
-
-### 1.1.0
-
-Added features X, Y, and Z.
-
------------------------------------------------------------------------------------------------------------
-
-## Working with Markdown
-
-**Note:** You can author your README using Visual Studio Code.  Here are some useful editor keyboard shortcuts:
-
-* Split the editor (`Cmd+\` on macOS or `Ctrl+\` on Windows and Linux)
-* Toggle preview (`Shift+CMD+V` on macOS or `Shift+Ctrl+V` on Windows and Linux)
-* Press `Ctrl+Space` (Windows, Linux) or `Cmd+Space` (macOS) to see a list of Markdown snippets
-
-### For more information
-
-* [Visual Studio Code's Markdown Support](http://code.visualstudio.com/docs/languages/markdown)
-* [Markdown Syntax Reference](https://help.github.com/articles/markdown-basics/)
-
-**Enjoy!**
+Early build, not even a "release," just locally installed (by copying `package.json` and `out` to `$HOME/.vscode/extensions/miyamotoh-vscal-0.0.1` dir) but works.. :blush:
