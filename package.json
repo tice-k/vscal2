@@ -10,7 +10,7 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:extension.calendar"
+		"*"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -18,6 +18,12 @@
 			{
 				"command": "extension.calendar",
 				"title": "Calendar"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "extension.calendar",
+				"key": "shift+ctrl+C"
 			}
 		]
 	},

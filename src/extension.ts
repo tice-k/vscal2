@@ -8,7 +8,11 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "vscal" is now active!');
+	// let button = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 0);
+	// button.text = '$(calendar)';
+	// button.command = 'extension.calendar';
+	// button.color = 'White';
+	// button.show();
 
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
@@ -16,10 +20,23 @@ export function activate(context: vscode.ExtensionContext) {
 	let disposable = vscode.commands.registerCommand('extension.calendar', () => {
 		// The code you place here will be executed every time your command is executed
 
-		// Display a message box to the user
-		const cp = require('child_process')
-		cp.exec('MON=$(date +%-m); DAY=$(date +%-d); cd /tmp ; cal -h -m $(expr $MON - 1) > .vscal-1.txt; cal -h -m $(expr $MON + 1) > .vscal-3.txt; (cal -h -m $MON | sed "s/ $DAY /\[$DAY\]/") > .vscal-2.md; paste .vscal-1.txt .vscal-2.md .vscal-3.txt > .vscal.md ; rm -f .vscal-[123]*', 2000);
-		let calendar = vscode.Uri.file('/tmp/.vscal.md');
+		// user-defined parameters
+		const numMonthsToShowBefore = 1;
+		const numMonthsToShowAfter = 1;
+		const numMonthsPerRow = 3;
+		const extraHorizontalSpace = 1;
+		const extraVerticalSpace = 1;
+
+		const c = require('./cal');
+		let data : string = c.createFile(numMonthsToShowBefore, numMonthsToShowAfter, numMonthsPerRow, extraHorizontalSpace, extraVerticalSpace);
+		const fs = require('fs');
+		const path = require('path');
+		let p = path.dirname(process.execPath);
+		fs.writeFile(`${p}/calendar.md`, data, (err: any) => {
+			if (err) {throw err;}
+		});
+		let calendar = vscode.Uri.file(`${p}/calendar.md`);
+
 		vscode.window.showTextDocument(calendar);
 	});
 
@@ -27,4 +44,4 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }
