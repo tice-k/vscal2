@@ -8,11 +8,6 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
-	// let button = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 0);
-	// button.text = '$(calendar)';
-	// button.command = 'extension.calendar';
-	// button.color = 'White';
-	// button.show();
 
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
@@ -21,11 +16,12 @@ export function activate(context: vscode.ExtensionContext) {
 		// The code you place here will be executed every time your command is executed
 
 		// user-defined parameters
-		const numMonthsToShowBefore = 1;
-		const numMonthsToShowAfter = 1;
-		const numMonthsPerRow = 3;
-		const extraHorizontalSpace = 1;
-		const extraVerticalSpace = 1;
+		let config = vscode.workspace.getConfiguration('calendar');
+		const numMonthsToShowBefore = config.numMonthsToShowBefore;
+		const numMonthsToShowAfter = config.numMonthsToShowAfter;
+		const numMonthsPerRow = config.numMonthsPerRow;
+		const extraHorizontalSpace = config.extraHorizontalSpace;
+		const extraVerticalSpace = config.extraVerticalSpace;
 
 		const c = require('./cal');
 		let data : string = c.createFile(numMonthsToShowBefore, numMonthsToShowAfter, numMonthsPerRow, extraHorizontalSpace, extraVerticalSpace);
@@ -44,4 +40,4 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 // this method is called when your extension is deactivated
-export function deactivate() { }
+export function deactivate() {}

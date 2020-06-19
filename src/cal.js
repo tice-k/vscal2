@@ -1,18 +1,15 @@
-// user-defined parameters
-const numMonthsToShowBefore = 1;
-const numMonthsToShowAfter = 2;
-const numMonthsPerRow = 4;
-const extraHorizontalSpace = 1;
-const extraVerticalSpace = 1;
-
 const now = new Date();
 const days = ['Su','Mo','Tu','We','Th','Fr','Sa'];
-const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const lastDayOfMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
 
 const createMonthTag = (month, year, now) => {
-    if (month === now.getMonth()) {return `      [${months[month]}]${year}       `;}
-    else {return `       ${months[month]} ${year}       `;}
+    let tag = '';
+    for (let i = 1; i <= (15 - months[month].length) / 2; i++) {tag += ' ';}
+    if (month === now.getMonth()) {tag += `[${months[month]}]${year}`;}
+    else {tag += ` ${months[month]} ${year} `;}
+    for (; tag.length < 22;) {tag += ' ';}
+    return tag;
 };
 const createDaysTag = () => {
     let tag = ' ';
@@ -23,8 +20,7 @@ const createDaysTag = () => {
 };
 const createWeekRow = (week, month, year) => {
     if (week < 0 || week > 5) {return '        ERROR         ';}
-    const premier = new Date();
-    premier.setFullYear(year, month, 1);
+    const premier = new Date(year, month, 1);
     let text = ' ';
     if (week === 0) {
         for(let i = 0; i < 7; i++) {
@@ -32,6 +28,7 @@ const createWeekRow = (week, month, year) => {
         }
     } else {
         let firstDateOfWeek = 1 - premier.getDay() + 7 * week;
+        text = firstDateOfWeek === now.getDate() && month === now.getMonth() && year === now.getFullYear() ? '[' : ' ';
         for(let i = firstDateOfWeek; i < firstDateOfWeek + 7; i++) {
             if (month === 1 && isLeapYear(year)) {
                 if (i <= 29) {text += addSpaceToDate(i, month, year);}
@@ -45,10 +42,11 @@ const createWeekRow = (week, month, year) => {
     return text;
 };
 const addSpaceToDate = (date, month, year) => {
+    let thisDay = new Date(year, month, date);
     if (date === now.getDate() && month === now.getMonth() && year === now.getFullYear()) {
         return date <= 9 ? `[${date}]` : `${date}]`;
     } else if (date + 1 === now.getDate() && month === now.getMonth() && year === now.getFullYear()) {
-        if (date + 1 <= 9) {return date <= 9 ? ` ${date} ` : `${date} `;}
+        if (date + 1 <= 9 || thisDay.getDay() === 6) {return date <= 9 ? ` ${date} ` : `${date} `;}
         else {return date <= 9 ? ` ${date}[` : `${date}[`;}
     } else {
         return date <= 9 ? ` ${date} ` : `${date} `;
@@ -72,9 +70,12 @@ const createRowOfCalendars = (padding, start, end) => {
         }
         data += '\n';
     }
+    if (start <= 0 && end >= 0) {
+        data = "'" + data.substring(1);
+    }
     return data;
 };
-exports.createFile = (numMonthsToShowBefore, numMonthsToShowAfter, numMonthsPerRow, extraHorizontalSpace, extraVerticalSpace) => {
+const createFile = (numMonthsToShowBefore, numMonthsToShowAfter, numMonthsPerRow, extraHorizontalSpace, extraVerticalSpace) => {
     let horiPadding = '';
     for (let i = 0; i < extraHorizontalSpace; i++) {horiPadding += ' ';}
     let vertPadding = '';
@@ -93,4 +94,5 @@ exports.createFile = (numMonthsToShowBefore, numMonthsToShowAfter, numMonthsPerR
     return data;
 };
 
-// exports.createFile(numMonthsToShowBefore, numMonthsToShowAfter, numMonthsPerRow, extraHorizontalSpace, extraVerticalSpace);
+exports.createFile = createFile;
+// createFile(numMonthsToShowBefore, numMonthsToShowAfter, numMonthsPerRow, extraHorizontalSpace, extraVerticalSpace);
